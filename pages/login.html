@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <script src="login.js" defer></script>
+</head>
+<body>
+    <main>
+        <div class="form-container">
+           <h1>Bienvenido</h1>
+           <form id="login-form">
+            <label for="user" class="sr-only">User</label>
+            <input type="text" name="user" id="user" placeholder="Correo electrónico">
+
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" name="password" id="password" placeholder="Contraseña" pattern="".{6,20}>
+            <span id="eye-icon3" class="eye-icon">👁️</span>
+
+            <button type="submit">Iniciar sesión</button>
+           </form>
+           <p>No tengo cuenta - <a href="/register">Registrate</a></p>
+           <!-- Remove after testing api -->
+           <p>Go to posts - <a href="/posts">Go To Posts</a></p>
+           <script>
+            const passwordField = document.getElementById("password");
+            const eyeIcon3 = document.getElementById("eye-icon3");
+    
+            eyeIcon3.addEventListener("click", function() {
+            if (passwordField.type === "password") {
+            passwordField.type = "text";  
+            eyeIcon3.src = "icono-ojo-abierto.png"; 
+            } else {
+            passwordField.type = "password"; 
+            eyeIcon3.src = "icono-ojo-cerrado.png"; 
+            }
+            });
+            eyeIcon3.addEventListener('click', togglePasswordVisibility);
+        </script>
+
+     </div> 
+     </main>
+</body>
+</html>
+

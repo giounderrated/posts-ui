@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All posts</title>
+    <!-- The next line makes it to use styles from the file styles.css in the public folder-->
+    <link rel="stylesheet" href="/postStyles.css">
+  </head>
+  <body>
+    <h1>All posts</h1>
+    <div id="posts-container"></div>
+    <script>
+      function createPostElement(post) {
+        // Create a wrapper div for the post
+        const postElement = document.createElement("div");
+        postElement.classList.add("post"); // Add a class for styling
+
+        // Create an h2 element for the post title
+        const titleElement = document.createElement("h2");
+        titleElement.textContent = post.title; // Set the title text
+
+        // Author
+        const authorElement = document.createElement("p");
+        authorElement.textContent = `By: ${post.author}`;
+        authorElement.classList.add("author");
+
+        // Description
+        const descriptionElement = document.createElement("p");
+        descriptionElement.textContent = post.description;
+
+        // Address
+        const addressElement = document.createElement("p");
+        addressElement.textContent = `Address: ${post.address}`;
+        addressElement.classList.add("address");
+
+        // Services
+        const servicesElement = document.createElement("ul");
+        servicesElement.classList.add("services");
+        const services = [
+          { name: "Electric Service", has: post.hasElectricService },
+          { name: "Gas Service", has: post.hasGasService },
+          { name: "Internet Service", has: post.hasInternetService },
+          { name: "Parking", has: post.hasParking },
+          { name: "Phone", has: post.hasPhone },
+          { name: "Water Service", has: post.hasWaterService },
+        ];
+        services.forEach((service) => {
+          const serviceItem = document.createElement("li");
+          serviceItem.textContent = `${service.name}: ${ service.has ? "Yes" : "No"}`;
+          servicesElement.appendChild(serviceItem);
+        });
+
+        // Property Type
+        const typeElement = document.createElement("p");
+        typeElement.textContent = `Type: ${post.isDepartment ? "Apartment" : post.isHouse ? "House" : "Other"}`;
+
+        // Rooms and Likes
+        const detailsElement = document.createElement("p");
+        detailsElement.textContent = `Rooms: ${post.numberOfRooms} | Likes: ${post.likes}`;
+
+        // Append all elements to the post wrapper
+        postElement.appendChild(titleElement);
+        postElement.appendChild(authorElement);
+        postElement.appendChild(descriptionElement);
+        postElement.appendChild(addressElement);
+        postElement.appendChild(servicesElement);
+        postElement.appendChild(typeElement);
+        postElement.appendChild(detailsElement);
+        
+        // Return the complete post element to be rendered
+        return postElement;
+      }
+
+      async function getData() {
+        const postsDiv = document.getElementById("posts-container"); // Get the element that will contain all the posts in it.
+        const response = await fetch("http://localhost:3000/search"); // Makes an api Call
+        const postsData = await response.json(); // Data comes from the API and transform it into a JSON object.
+
+        if (postsData.length == 0) {
+          const noDataContent = document.createElement("h2");
+          noDataContent.innerText = "No posts";
+        } else {
+          // Generate an html element to display a post by looping in the array of posts.
+          for (let i = 0; i < postsData.length; i++) {
+            const postElement = createPostElement(postsData[0]);
+            // docs https://www.w3schools.com/jsref/met_node_appendchild.asp
+            postsDiv.appendChild(postElement);
+          }
+        }
+      }
+
+      getData();
+    </script>
+  </body>
+</html>
